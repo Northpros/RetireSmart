@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>RetireSmart Canada</title>
+  <meta charset="utf-8">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/react@18/umd/react.development.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.development.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/babel-standalone@7/babel.min.js"></script>
+  <style>
+    body { font-family: system-ui; max-width: 800px; margin: 40px auto; padding: 20px; background: #f8f9fa; }
+    .big { font-size: 3rem; text-align: center; color: #5a67d8; }
+    input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #cbd5e0; }
+    button { background: #5a67d8; color: white; padding: 15px; border: none; border-radius: 8px; font-size: 1.2rem; width: 100%; cursor: pointer; }
+    .yes { background: #48bb78; }
+    .no { background: #f56565; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+<script type="text/babel">
+const { useState } = React;
+
+function App() {
+  const [age, setAge] = useState(57);
+  const [pension] = useState(42000);
+  const [rrsp] = useState(650000);
+  const [tfsa] = useState(180000);
+  const [spend] = useState(85000);
+
+  const safe = pension + (rrsp + tfsa) * 0.04;
+  const can = safe > spend;
+
+  return (
+    <div>
+      <h1 className="big">RetireSmart Canada</h1>
+      <label>Your age today <b>{age}</b></label>
+      <input type="range" min="50" max="75" value={age} onChange={e => setAge(+e.target.value)} />
+
+      <h2>Your numbers</h2>
+      <ul>
+        <li>DB Pension: <b>${pension.toLocaleString()}/yr</b></li>
+        <li>RRSP + TFSA: <b>${(rrsp + tfsa).toLocaleString()}</b></li>
+        <li>You want to spend: <b>${spend.toLocaleString()}/yr</b></li>
+      </ul>
+
+      <div className={can ? "yes" : "no"} style={{padding:30, borderRadius:16, marginTop:30, color:'white'}}>
+        {can 
+          ? `YES! Retire at ${age} with $${Math.round(safe - spend).toLocaleString()}/yr surplus!`
+          : `Need $${Math.round(spend - safe).toLocaleString()} more — keep working ${Math.ceil((spend - safe)/30000)} years`}
+      </div>
+
+      <button onClick={() => window.print()}>Download PDF Report</button>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
