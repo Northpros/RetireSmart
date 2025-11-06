@@ -1,64 +1,52 @@
----
-layout: default
----
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8">
   <title>RetireSmart Canada</title>
   <style>
-    body {font-family:system-ui;background:#f8f9fa;margin:40px auto;max-width:800px;padding:20px}
-    h1 {font-size:3rem;text-align:center;color:#5a67d8}
-    input {width:100%;height:12px;margin:10px 0}
-    button {background:#5a67d8;color:white;padding:15px;border:none;border-radius:8px;font-size:1.2rem;width:100%;margin-top:20px;cursor:pointer}
-    .yes {background:#48bb78;color:white;padding:30px;border-radius:16px;text-align:center;font-size:1.5rem;margin-top:30px}
-    .no {background:#f56565;color:white;padding:30px;border-radius:16px;text-align:center;font-size:1.5rem;margin-top:30px}
+    body{font-family:system-ui;background:#f0f7ff;margin:40px auto;max-width:800px;padding:20px}
+    h1{font-size:3rem;text-align:center;color:#5a67d8}
+    input{width:100%;height:50px;border-radius:12px;border:2px solid #5a67d8}
+    button{background:#5a67d8;color:white;padding:18px;border:none;border-radius:12px;font-size:1.3rem;width:100%;margin-top:30px;cursor:pointer}
+    .yes{background:#48bb78;color:white;padding:40px;border-radius:20px;text-align:center;font-size:2rem;margin-top:30px}
+    .no{background:#f56565;color:white;padding:40px;border-radius:20px;text-align:center;font-size:2rem;margin-top:30px}
   </style>
 </head>
 <body>
-  <div id="root"></div>
+  <h1>🔥 RetireSmart Canada 🔥</h1>
+  
+  <label><b>Your age today</b> → <span id="age">57</span></label>
+  <input type="range" min="50" max="75" value="57" id="slider" oninput="calc()">
 
-<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/babel-standalone@7/babel.min.js"></script>
+  <div style="background:#e6fffa;padding:25px;border-radius:15px;margin-top:25px">
+    <b>Your numbers</b><br>
+    DB Pension: <b>$42,000</b>/yr<br>
+    RRSP + TFSA: <b>$830,000</b><br>
+    Spending goal: <b>$85,000</b>/yr
+  </div>
 
-<script type="text/babel">
-const { useState } = React;
-function App() {
-  const [age, setAge] = useState(57);
-  const pension = 42000;
-  const rrsp = 650000;
-  const tfsa = 180000;
-  const spend = 85000;
-  const safe = pension + (rrsp + tfsa) * 0.04;
-  const can = safe > spend;
+  <div id="result" class="yes">
+    🎉 YES! Retire at 57 with $34,200/yr surplus!
+  </div>
 
-  return (
-    <div>
-      <h1>🔥 RetireSmart Canada 🔥</h1>
-      <label>Your age today <b>{age}</b></label>
-      <input type="range" min="50" max="75" value={age} onChange={e=>setAge(+e.target.value)} />
+  <button onclick="window.print()">📄 Download PDF Report</button>
 
-      <div style={{background:'#f0fff4',padding:20,borderRadius:12,marginTop:20}}>
-        <h2>Your numbers</h2>
-        <ul style={{fontSize:'1.2rem'}}>
-          <li>DB Pension: <b>${pension.toLocaleString()}/yr</b></li>
-          <li>RRSP + TFSA: <b>${(rrsp+tfsa).toLocaleString()}</b></li>
-          <li>You want: <b>${spend.toLocaleString()}/yr</b></li>
-        </ul>
-      </div>
-
-      <div className={can ? "yes" : "no"}>
-        {can 
-          ? `🎉 YES! Retire at ${age} with $${(safe-spend).toLocaleString()}/yr surplus!`
-          : `Need $${(spend-safe).toLocaleString()} more — keep working ${Math.ceil((spend-safe)/30000)} years`}
-      </div>
-
-      <button onClick={()=>window.print()}>📄 Download PDF Report</button>
-    </div>
-  );
-}
-ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-</script>
+  <script>
+    function calc() {
+      const age = document.getElementById('slider').value;
+      document.getElementById('age').innerText = age;
+      const safe = 42000 + 830000 * 0.04;
+      const diff = safe - 85000;
+      const result = document.getElementById('result');
+      if (diff > 0) {
+        result.className = 'yes';
+        result.innerHTML = `🎉 YES! Retire at ${age} with $${diff.toLocaleString()}/yr surplus!`;
+      } else {
+        result.className = 'no';
+        result.innerHTML = `Need $${(-diff).toLocaleString()} more — keep working ${Math.ceil(-diff/30000)} years`;
+      }
+    }
+    calc();
+  </script>
 </body>
 </html>
