@@ -13,9 +13,9 @@
   </style>
 </head>
 <body>
-  <h1>🔥 RetireSmart Canada 🔥</h1>
+  <h1>RetireSmart Canada</h1>
   
-  <label><b>Your age today</b> → <span id="age">57</span></label>
+  <label><b>Your age today → <span id="age">57</span></b></label>
   <input type="range" min="50" max="75" value="57" id="slider" oninput="calc()">
 
   <div style="background:#e6fffa;padding:25px;border-radius:15px;margin-top:25px">
@@ -26,10 +26,10 @@
   </div>
 
   <div id="result" class="yes">
-    🎉 YES! Retire at 57 with $34,200/yr surplus!
+    YES! Retire at 57 with $34,200/yr surplus!
   </div>
 
-  <button onclick="window.print()">📄 Download PDF Report</button>
+  <button onclick="window.print()">Download PDF Report</button>
 
   <script>
     function calc() {
@@ -40,7 +40,7 @@
       const result = document.getElementById('result');
       if (diff > 0) {
         result.className = 'yes';
-        result.innerHTML = `🎉 YES! Retire at ${age} with $${diff.toLocaleString()}/yr surplus!`;
+        result.innerHTML = `YES! Retire at ${age} with $${diff.toLocaleString()} surplus!`;
       } else {
         result.className = 'no';
         result.innerHTML = `Need $${(-diff).toLocaleString()} more — keep working ${Math.ceil(-diff/30000)} years`;
